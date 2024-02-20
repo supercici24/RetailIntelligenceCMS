@@ -2,14 +2,14 @@
 </script> -->
 
 <template>
-  <div>App</div>
-  <router-link to="/main">主页</router-link>
-  <router-link to="/login">登录</router-link>
-  <router-view></router-view>
+  <div class="app">
+    <router-view></router-view>
+  </div>
 </template>
 
-<!-- <style scoped>
-div {
-  font-size: 12px;
+<style scoped>
+.app {
+  width: 100vw;
+  height: 100vh;
 }
-</style> -->
+</style>

@@ -1,0 +1,56 @@
+<template>
+  <div class="panel-account">
+    <el-form :model="account" :rules="rules" status-icon ref="formRef">
+      <el-form-item label="帐号" prop="name">
+        <el-input v-model="account.name" />
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="account.password" show-password />
+      </el-form-item>
+    </el-form>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { reactive, ref } from 'vue'
+import type { FormRules, ElForm } from 'element-plus'
+import { ElMessage } from 'element-plus'
+
+const account = reactive({
+  name: '',
+  password: ''
+})
+
+// 定义校验规则
+const rules: FormRules = {
+  name: [
+    { message: '请输入帐号', required: true, trigger: 'blur' },
+    // { min: 3, max: 6, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+    { pattern: /^[a-zA-Z0-9]{6,20}$/, message: '长度在6到20 个字符', trigger: 'blur' }
+  ],
+
+  password: [
+    { message: '请输入密码', required: true, trigger: 'blur' },
+    { pattern: /^[a-zA-Z0-9]{3,}$/, message: '必须是3位以上数字或字母组成', trigger: 'blur' }
+  ]
+}
+
+// 登录
+const formRef = ref<InstanceType<typeof ElForm>>()
+function loginAccount() {
+  formRef.value?.validate((valid) => {
+    if (valid) {
+      console.log('登录成功')
+    } else {
+      ElMessage.error('请输入正确的帐号和密码')
+      return false
+    }
+  })
+}
+
+defineExpose({
+  loginAccount
+})
+</script>
+
+<style lang="less" scoped></style>
