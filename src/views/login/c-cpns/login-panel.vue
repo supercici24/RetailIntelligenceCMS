@@ -38,16 +38,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import panelAccount from './panel-account.vue'
 import panelPhone from './panel-phone.vue'
+import { localCache } from '@/utils/cache'
 
 const activeName = ref('account')
-const isKeepPwd = ref(false)
+// 记录记住密码的值
+const isKeepPwd = ref<any>(localCache.getCache('isKeepPwd') === 'true')
+watch(isKeepPwd, (newValue) => {
+  const isCheck = newValue ? 'true' : 'false'
+  localCache.setCache('isKeepPwd', isCheck)
+})
+
 const accountRef = ref<InstanceType<typeof panelAccount>>()
 function handleLoginClick() {
   if (activeName.value === 'account') {
-    accountRef.value?.loginAccount()
+    accountRef.value?.loginAccount(isKeepPwd.value)
   }
 }
 </script>
