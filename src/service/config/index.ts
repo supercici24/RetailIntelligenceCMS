@@ -1,4 +1,6 @@
-export const BASE_URL = 'http://codercba.com:8000'
+export const BASE_URL = 'http://localhost:4000'
+// export const BASE_URL = 'http://127.0.0.1:4000'
+// export const BASE_URL = 'http://152.136.185.210:5000'
 export const TIME_OUT = 5000
 
 // 分线上(生产)环境和开发环境
