@@ -1,13 +1,13 @@
-import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
-// 针对AxiosRequestConfig配置进行扩展
-export interface AniInterceptors<T = AxiosResponse> {
-  requestSuccessFn?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig
-  requestFailureFn?: (err: any) => any
-  responseSuccessFn?: (res: T) => T
-  responseFailureFn?: (err: any) => any
+// 针对AxiosRequestConfig配置进行扩展（axios版本升级后，用AxiosRequestConfig会有类型冲突）
+export interface AniRequestInterceptors<T = AxiosResponse> {
+  requestInterceptor?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig
+  requestInterceptorCatch?: (err: any) => any
+  responseInterceptor?: (res: T) => T
+  responseInterceptorCatch?: (err: any) => any
 }
 
-export interface AniRequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
-  interceptors?: AniInterceptors<T>
+export interface AniRequestConfig<T = AxiosResponse> extends InternalAxiosRequestConfig {
+  interceptors?: AniRequestInterceptors<T>
 }

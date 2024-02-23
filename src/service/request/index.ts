@@ -1,20 +1,25 @@
 import axios from 'axios'
 import type { AxiosInstance } from 'axios'
-import type { AniRequestConfig } from './type'
+import type { AniRequestConfig, AniRequestInterceptors } from './type'
 
 // 拦截器
 /**
- * 1.拦截器进行精细控制->全局拦截器->实例拦截器->单词请求拦截器
+ * 1.拦截器进行精细控制->全局拦截器->实例拦截器->单次请求拦截器
  * 2.响应结果的类型处理（泛型）
  */
 
 class AniRequest {
   instance: AxiosInstance
+  interceptors?: AniRequestInterceptors
 
   constructor(config: AniRequestConfig) {
+    // 创建axios实例
     this.instance = axios.create(config)
 
-    // 每个instance实例都添加拦截器
+    // 保存基本信息
+    this.interceptors = config.interceptors
+
+    // 1、每个instance实例都添加拦截器(全局)
     this.instance.interceptors.request.use(
       (config) => {
         return config
@@ -33,30 +38,30 @@ class AniRequest {
       }
     )
 
-    // 针对特定的AniRequest实例添加拦截器
+    // 2、针对特定的AniRequest实例添加拦截器（单个）
     this.instance.interceptors.request.use(
-      config.interceptors?.requestSuccessFn,
-      config.interceptors?.requestFailureFn
+      this.interceptors?.requestInterceptor,
+      this.interceptors?.requestInterceptorCatch
     )
     this.instance.interceptors.response.use(
-      config.interceptors?.responseSuccessFn,
-      config.interceptors?.responseFailureFn
+      this.interceptors?.responseInterceptor,
+      this.interceptors?.responseInterceptorCatch
     )
   }
   // 封装网络请求的方法
   // T => IHomeData
-  request<T = any>(config: AniRequestConfig<T>) {
+  request<T = any>(config: AniRequestConfig<T>): Promise<T> {
     // 单次请求的成功拦截处理
-    // if (config.interceptors?.requestSuccessFn) {
-    //   config = config.interceptors.requestSuccessFn(config)
-    // }
+    if (config.interceptors?.requestInterceptor) {
+      config = config.interceptors.requestInterceptor(config)
+    }
     return new Promise((resolve, reject) => {
       this.instance
         .request<any, T>(config)
         .then((res) => {
           // 单次响应的成功拦截处理
-          if (config.interceptors?.responseSuccessFn) {
-            res = config.interceptors.responseSuccessFn(res)
+          if (config.interceptors?.responseInterceptor) {
+            res = config.interceptors.responseInterceptor(res)
           }
           resolve(res)
         })

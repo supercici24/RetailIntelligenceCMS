@@ -32,7 +32,7 @@ const rules: FormRules = {
   name: [
     { message: '请输入帐号', required: true, trigger: 'blur' },
     // { min: 3, max: 6, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-    { pattern: /^[a-zA-Z0-9]{5,20}$/, message: '长度在5到20 个字符', trigger: 'blur' }
+    { pattern: /^[a-zA-Z0-9_]{5,20}$/, message: '长度在5到20 个字符', trigger: 'blur' }
   ],
 
   password: [
