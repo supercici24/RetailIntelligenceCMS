@@ -20,7 +20,7 @@ export function getUserInfoById(id: number) {
 // 获取用户权限
 export function getUserMenusByRoleId(id: number) {
   return aniRequest.get({
-    headers: new AxiosHeaders(),
-    url: `/role/${id}/menu`
+    url: `/role/${id}/menu`,
+    headers: new AxiosHeaders()
   })
 }
