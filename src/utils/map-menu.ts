@@ -14,6 +14,7 @@ function loadLocalRoutes() {
   return localRoutes
 }
 
+let firstMenu: any = null
 export function mapMenusToRoutes(menuList: any[]) {
   // 加载本地路由
   const localRoutes = loadLocalRoutes()
@@ -23,7 +24,10 @@ export function mapMenusToRoutes(menuList: any[]) {
     for (const subMenu of menu.childrens) {
       const route = localRoutes.find((item) => item.path === subMenu.url)
       if (route) routes.push(route)
+      // 记录第一个被匹配到的菜单
+      if (!firstMenu && route) firstMenu = subMenu
     }
   }
   return routes
 }
+export { firstMenu }
