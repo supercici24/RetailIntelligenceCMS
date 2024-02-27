@@ -25,7 +25,7 @@
 
             <!--子菜单 -->
             <template v-for="subItem in item.childrens" :key="subItem.id">
-              <el-menu-item :index="subItem.id + ''">
+              <el-menu-item :index="subItem.id + ''" @click="handleItemClick(subItem)">
                 <el-icon v-if="subItem.icon">
                   {{ subItem.icon }}
                   <component :is="subItem.icon"></component>
@@ -43,6 +43,7 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 import useLoginStore from '@/store/login/login'
+import { useRouter } from 'vue-router'
 defineProps({
   isFold: {
     type: Boolean,
@@ -55,6 +56,12 @@ const loginStore = useLoginStore()
 const userMenus = loginStore.userMenus
 
 const routePath = '2'
+
+const router = useRouter()
+const handleItemClick = (item: any) => {
+  const url = item.url
+  router.push(url)
+}
 </script>
 
 <style lang="less" scoped>
