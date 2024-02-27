@@ -1,5 +1,5 @@
 export default {
   path: '/main/moment/main',
   name: 'momentMain',
-  component: () => import('@/views/main/product/main/main.vue')
+  component: () => import('@/views/main/moment/main/main.vue')
 }
