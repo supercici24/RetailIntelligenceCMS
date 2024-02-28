@@ -43,7 +43,9 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 import useLoginStore from '@/store/login/login'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { computed } from 'vue'
+import { mapPathToMenu } from '@/utils/map-menu'
 defineProps({
   isFold: {
     type: Boolean,
@@ -55,7 +57,13 @@ defineProps({
 const loginStore = useLoginStore()
 const userMenus = loginStore.userMenus
 
-const routePath = '2'
+// 默认菜单
+const route = useRoute()
+
+const routePath = computed(() => {
+  const pathMenu = mapPathToMenu(route.path, userMenus)
+  return pathMenu.id + ''
+})
 
 const router = useRouter()
 const handleItemClick = (item: any) => {
