@@ -41,7 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import useLoginStore from '@/store/login/login'
 import { useRouter, useRoute } from 'vue-router'
 import { computed } from 'vue'

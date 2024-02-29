@@ -1,15 +1,18 @@
-<!-- <script setup lang="ts">
-</script> -->
-
 <template>
   <div class="app">
-    <router-view></router-view>
+    <el-config-provider :locale="zhCn">
+      <router-view></router-view>
+    </el-config-provider>
   </div>
 </template>
 
-<style scoped>
+<script setup lang="ts">
+import { ElConfigProvider } from 'element-plus'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+</script>
+
+<style scoped lang="less">
 .app {
-  width: 100vw;
-  height: 100vh;
+  height: 100%;
 }
 </style>
