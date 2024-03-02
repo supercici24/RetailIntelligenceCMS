@@ -1,3 +1,4 @@
+import type { emit } from 'process'; import type { emit } from 'process';
 <template>
   <div class="page-search">
     <m-form v-bind="searchFormConfig" v-model="formData">
@@ -35,6 +36,8 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['resetBtnClick', 'queryBtnClick'])
+
 const formItems = props.searchFormConfig?.formItems ?? []
 const formOriginData: any = {}
 for (const item of formItems) {
@@ -44,10 +47,11 @@ const formData = ref({ ...formOriginData })
 
 const handleResetClick = () => {
   formData.value = { ...formOriginData }
+  emit('resetBtnClick')
 }
 
 const handleQueryClick = () => {
-  console.log('搜索')
+  emit('queryBtnClick', formData.value)
 }
 </script>
 
