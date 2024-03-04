@@ -59,9 +59,9 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, Ref, ref } from 'vue'
-
-import { IFormItem } from '../types'
+import type { Ref, PropType } from 'vue'
+import { ref } from 'vue'
+import type { IFormItem } from '../types'
 
 const props = defineProps({
   modelValue: {

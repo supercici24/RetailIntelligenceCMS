@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
+import type { PropType } from 'vue'
 import { reactiveWidth } from '@/utils/reactive-width'
 const props = defineProps({
   listData: {
@@ -80,10 +80,19 @@ const props = defineProps({
   showFooter: {
     type: Boolean,
     default: true
+  },
+  page: {
+    type: Object,
+    default: () => ({ currentPage: 1, pageSize: 10 })
   }
 })
 
-const page = defineModel('page')
+const emits = defineEmits(['update:page'])
+const paginationLayout = reactiveWidth(
+  'total, sizes, prev, pager, next',
+  'total, sizes, prev, pager, next, jumper'
+)
+// const page = defineModel('page')
 const handleSizeChange = () => {}
 const handleCurrentChange = () => {}
 </script>

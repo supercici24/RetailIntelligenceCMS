@@ -9,7 +9,7 @@
       <!-- header插槽 -->
       <template #headerHandle>
         <el-button type="primary" @click="handleNewClick">
-          {{ contentTableConfig.title.btnText }}
+          {{ contentTableConfig?.title.btnText }}
         </el-button>
       </template>
       <!-- 表格中的插槽 -->
@@ -61,6 +61,8 @@ const props = defineProps({
     require: true
   }
 })
+const isUpdate = ref(true)
+const isDelete = ref(true)
 
 // 1.双向绑定
 const pageInfo = ref({ currentPage: 1, pageSize: 10 })
@@ -86,6 +88,19 @@ const dataList = computed(() => listStore.userList)
 const dataCount = computed(() => listStore.userTotalCount)
 
 getPageData()
+
+const emit = defineEmits(['newBtnClick', 'editBtnClick'])
+// 删除/编辑/新建
+const handleDeleteClick = (item: any) => {
+  listStore.deleteUserByIdAction(item.id)
+}
+const handleEditClick = (item: any) => {
+  emit('editBtnClick', item)
+}
+
+const handleNewClick = () => {
+  emit('newBtnClick')
+}
 
 defineExpose({
   getPageData

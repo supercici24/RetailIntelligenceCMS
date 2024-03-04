@@ -13,6 +13,7 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 <style scoped lang="less">
 .app {
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 }
 </style>

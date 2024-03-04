@@ -5,6 +5,7 @@ import { localCache } from '@/utils/cache'
 import router from '@/router'
 import { LOGIN_TOKEN, USER_INFO, USER_MENUS } from '@/global/constants'
 import { mapMenusToRoutes } from '../../utils/map-menu'
+import useMainStore from '../main/main'
 
 interface ILoginState {
   token: string
@@ -41,6 +42,10 @@ const useLoginStore = defineStore('login', {
       localCache.setCache(USER_INFO, userinfo)
       localCache.setCache(USER_MENUS, userMenus)
 
+      // 请求所有的角色和部门
+      const mainStore = useMainStore()
+      mainStore.fetchEntireDataAction()
+
       // 在页面跳转前，动态的添加路由
       this.addRoutes(userMenus)
       // 页面跳转到主页面
@@ -54,6 +59,10 @@ const useLoginStore = defineStore('login', {
         this.token = token
         this.userInfo = userInfo
         this.userMenus = userMenus
+
+        // 刷新的时候请求所有的角色和部门
+        const mainStore = useMainStore()
+        mainStore.fetchEntireDataAction()
 
         // 动态添加路由
         this.addRoutes(userMenus)
