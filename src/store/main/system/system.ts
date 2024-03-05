@@ -2,7 +2,11 @@ import {
   createUserData,
   deleteUserById,
   editUserData,
-  postUserListData
+  postPageListData,
+  postUserListData,
+  deletePageListData,
+  createPageData,
+  editPageData
 } from '@/service/main/system/system'
 import { defineStore } from 'pinia'
 import type { ISystemState } from './type'
@@ -10,7 +14,9 @@ import type { ISystemState } from './type'
 const useSystemStore = defineStore('system', {
   state: (): ISystemState => ({
     userList: [],
-    userTotalCount: 0
+    userTotalCount: 0,
+    pageList: [],
+    pageTotalCount: 0
   }),
   actions: {
     async postUserListAction(queryInfo: any) {
@@ -36,6 +42,32 @@ const useSystemStore = defineStore('system', {
       const { editData, id } = payload
       const editUserResut = await editUserData(id, editData)
       this.postUserListAction({ offset: 0, size: 10 })
+    },
+
+    async postPageListAction(payload: any) {
+      const { pageName, queryInfo } = payload
+      const pageListResult = await postPageListData(pageName, queryInfo)
+      const { totalCount, list } = pageListResult.data
+      this.pageList = list
+      this.pageTotalCount = totalCount
+    },
+
+    async deletePageByIdAction(payload: any) {
+      const { pageName, id } = payload
+      const deleteResult = await deletePageListData(pageName, id)
+      this.postPageListAction({ pageName, queryInfo: { offset: 0, size: 10 } })
+    },
+
+    async createPageDataAction(payload: any) {
+      console.log('payLoad:', payload)
+      const { pageName, newData } = payload
+      const createResult = await createPageData(pageName, newData)
+      this.postPageListAction({ pageName, queryInfo: { offset: 0, size: 10 } })
+    },
+
+    async editPageDataAction(payload: any) {
+      const { pageName, id, editData } = payload
+      const editResult = await editPageData(pageName, id, editData)
     }
   }
 })

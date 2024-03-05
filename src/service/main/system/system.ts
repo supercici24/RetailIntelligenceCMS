@@ -37,3 +37,35 @@ export function editUserData(id: number, editData: any) {
     headers: new AxiosHeaders()
   })
 }
+
+/**增删改查 */
+export function postPageListData(pageName: string, queryInfo: any) {
+  return aniRequest.post({
+    url: `/${pageName}/list`,
+    data: queryInfo,
+    headers: new AxiosHeaders()
+  })
+}
+
+export function deletePageListData(pageName: string, id: number) {
+  return aniRequest.delete({
+    url: `/${pageName}/${id}`,
+    headers: new AxiosHeaders()
+  })
+}
+
+export function createPageData(pageName: string, pageInfo: any) {
+  return aniRequest.post({
+    url: `${pageName}`,
+    data: pageInfo,
+    headers: new AxiosHeaders()
+  })
+}
+
+export function editPageData(pageName: string, id: number, editData: any) {
+  return aniRequest.patch({
+    url: `${pageName}/${id}`,
+    data: editData,
+    headers: new AxiosHeaders()
+  })
+}

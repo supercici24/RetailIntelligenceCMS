@@ -59,6 +59,10 @@ const props = defineProps({
   contentTableConfig: {
     type: Object,
     require: true
+  },
+  pageName: {
+    type: String,
+    required: true
   }
 })
 const isUpdate = ref(true)
@@ -74,25 +78,27 @@ watch(
 const listStore = useSystemStore()
 // 2.发送网络请求
 const getPageData = (queryInfo: any = {}) => {
-  listStore.postUserListAction({
-    // queryInfo: {
-    offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
-    size: pageInfo.value.pageSize,
-    ...queryInfo
-    // }
+  listStore.postPageListAction({
+    pageName: props.pageName,
+    queryInfo: {
+      offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
+      size: pageInfo.value.pageSize,
+      ...queryInfo
+    }
   })
 }
-
-// 3.从store中获取数据
-const dataList = computed(() => listStore.userList)
-const dataCount = computed(() => listStore.userTotalCount)
-
 getPageData()
+// 3.从store中获取数据
+const dataList = computed(() => listStore.pageList)
+const dataCount = computed(() => listStore.pageTotalCount)
 
 const emit = defineEmits(['newBtnClick', 'editBtnClick'])
 // 删除/编辑/新建
 const handleDeleteClick = (item: any) => {
-  listStore.deleteUserByIdAction(item.id)
+  listStore.deletePageByIdAction({
+    pageName: props.pageName,
+    id: item.id
+  })
 }
 const handleEditClick = (item: any) => {
   emit('editBtnClick', item)

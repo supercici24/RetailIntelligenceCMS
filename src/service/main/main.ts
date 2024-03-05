@@ -22,3 +22,14 @@ export function getEntireDepartment() {
     headers: new AxiosHeaders()
   })
 }
+
+export function getEntireMenus() {
+  return aniRequest.post({
+    url: '/menu/list',
+    data: {
+      offset: 0,
+      size: 10
+    },
+    headers: new AxiosHeaders()
+  })
+}

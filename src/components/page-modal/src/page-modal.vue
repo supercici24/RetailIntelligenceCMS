@@ -7,15 +7,14 @@
       destroy-on-close
       center
     >
-      <m-form v-bind="modalConfig.formConfig" v-model="formItems">
-        <slot></slot>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="handleConfirmClick"> 确定 </el-button>
-          </span>
-        </template>
-      </m-form>
+      <m-form v-bind="modalConfig.formConfig" v-model="formItems"></m-form>
+      <slot></slot>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="handleConfirmClick"> 确定 </el-button>
+        </span>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -39,6 +38,9 @@ const props = defineProps({
   defaultInfo: {
     type: Object,
     default: () => ({})
+  },
+  pageName: {
+    type: String
   }
 })
 
@@ -60,17 +62,19 @@ watch(
 // 点击确定按钮
 const handleConfirmClick = () => {
   dialogVisible.value = false
+
   if (Object.keys(props.defaultInfo).length) {
     // 编辑
-    listStore.editUserDataAction({
+    listStore.editPageDataAction({
+      pageName: props.pageName,
       id: props.defaultInfo.id,
-      editData: { ...formItems.value }
+      editData: { ...formItems.value, ...props.outerInfo }
     })
   } else {
     // 创建新用户
-    listStore.createUserDataAction({
-      // newData: { ...formItems.value, ...props.outerInfo }
-      ...formItems.value
+    listStore.createPageDataAction({
+      pageName: props.pageName,
+      newData: { ...formItems.value, ...props.outerInfo }
     })
   }
 }
