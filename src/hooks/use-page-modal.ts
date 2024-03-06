@@ -1,7 +1,9 @@
 import { ref } from 'vue'
 import pageModal from '@/components/page-modal'
 
-export function usePageModal() {
+type callbackFn = (item?: any) => void
+
+export function usePageModal(editCallback?: callbackFn) {
   const pageModalRef = ref<InstanceType<typeof pageModal>>()
   const defaultInfo = ref<any>({})
 
@@ -12,6 +14,7 @@ export function usePageModal() {
   const handleEditData = (item: any) => {
     defaultInfo.value = { ...item }
     showDialog()
+    editCallback && editCallback(item)
   }
   function showDialog() {
     if (pageModalRef.value) {

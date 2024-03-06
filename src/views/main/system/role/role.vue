@@ -48,13 +48,11 @@ import modalConfig from './config/modal.config'
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 import useMainStore from '@/store/main/main'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
+import { mapMenuListToIds } from '@/utils/map-menu'
 
 // 调用hooks
 const { pageContentRef, handleQueryClick, handleResetClick } = usePageSearch()
-
-// 调用hooks
-const { pageModalRef, handleNewData, handleEditData, defaultInfo } = usePageModal()
 
 // 获取完整的菜单
 const mainStore = useMainStore()
@@ -64,6 +62,17 @@ const handleEltreeCheck = (data1: any, data2: any) => {
   const menuList = [...data2.checkedKeys, ...data2.halfCheckedKeys]
   outerInfo.value = { menuList }
 }
+
+// pagemodal树形选择编辑逻辑
+const elTreeRef = ref<InstanceType<typeof ElTree>>()
+const editCallback = (item: any) => {
+  const leafKeys = mapMenuListToIds(item.menuList)
+  nextTick(() => {
+    elTreeRef.value?.setCheckedKeys(leafKeys)
+  })
+}
+// 调用hooks
+const { pageModalRef, handleNewData, handleEditData, defaultInfo } = usePageModal(editCallback)
 </script>
 
 <style lang="less" scoped>

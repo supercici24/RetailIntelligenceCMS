@@ -59,7 +59,6 @@ const useSystemStore = defineStore('system', {
     },
 
     async createPageDataAction(payload: any) {
-      console.log('payLoad:', payload)
       const { pageName, newData } = payload
       const createResult = await createPageData(pageName, newData)
       this.postPageListAction({ pageName, queryInfo: { offset: 0, size: 10 } })
@@ -68,6 +67,7 @@ const useSystemStore = defineStore('system', {
     async editPageDataAction(payload: any) {
       const { pageName, id, editData } = payload
       const editResult = await editPageData(pageName, id, editData)
+      this.postPageListAction({ pageName, queryInfo: { offset: 0, size: 10 } })
     }
   }
 })
